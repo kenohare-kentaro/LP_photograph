@@ -1,488 +1,598 @@
-import React, { useState, useEffect } from 'react';
-import { Camera, MessageCircle, MapPin, Heart, ChevronDown, ChevronUp, Instagram, Mail, ArrowRight, Video, CheckCircle2, Menu, X } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenohare | 関西・出張フォトグラフィー</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-const KenohareLP = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [openFaq, setOpenFaq] = useState(null);
+    <!-- Tailwind Config for Custom Animations -->
+    <script>
+        tailwind.config = {
+            theme: {
+                fontFamily: {
+                    sans: ['"Noto Sans JP"', 'sans-serif'],
+                    serif: ['"Noto Serif JP"', 'serif'],
+                },
+                extend: {
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                        'grow-y': 'growY 1.5s ease-out forwards',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        growY: {
+                            '0%': { height: '0' },
+                            '100%': { height: '4rem' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #57534e; /* stone-600 */
+            background-color: #fdfcf8;
+        }
+        h1, h2, h3, .font-serif {
+            font-family: 'Noto Serif JP', serif;
+        }
+        .bg-overlay-gradient {
+            background: linear-gradient(to bottom, rgba(245, 245, 240, 0.3), rgba(0,0,0,0), rgba(245, 245, 240, 0.5));
+        }
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="selection:bg-stone-200 selection:text-stone-800">
 
-  // Scroll detection for sticky header
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const toggleFaq = (index) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
-
-  const scrollToSection = (id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setMobileMenuOpen(false);
-  };
-
-  return (
-    <div className="font-sans text-stone-600 bg-[#fdfcf8] selection:bg-stone-200 selection:text-stone-800">
-      
-      {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="text-2xl font-serif tracking-widest font-bold text-stone-800 cursor-pointer" onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})}>
-            kenohare
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            <button onClick={() => scrollToSection('concept')} className="text-sm tracking-wide hover:text-stone-900 transition-colors">CONCEPT</button>
-            <button onClick={() => scrollToSection('gallery')} className="text-sm tracking-wide hover:text-stone-900 transition-colors">GALLERY</button>
-            <button onClick={() => scrollToSection('voice')} className="text-sm tracking-wide hover:text-stone-900 transition-colors">VOICE</button>
-            <button onClick={() => scrollToSection('plan')} className="text-sm tracking-wide hover:text-stone-900 transition-colors">PLAN</button>
-            <a href="#contact" className="bg-[#06C755] hover:bg-[#05b54c] text-white px-5 py-2 rounded-full flex items-center gap-2 transition-all shadow-md hover:shadow-lg text-sm font-bold">
-              <MessageCircle size={18} />
-              LINEで相談
-            </a>
-          </div>
-
-          <div className="md:hidden">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-stone-800 p-2">
-              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white border-b border-stone-100 p-6 flex flex-col space-y-4 md:hidden shadow-lg">
-            <button onClick={() => scrollToSection('concept')} className="text-left py-2 border-b border-stone-50">CONCEPT</button>
-            <button onClick={() => scrollToSection('gallery')} className="text-left py-2 border-b border-stone-50">GALLERY</button>
-            <button onClick={() => scrollToSection('voice')} className="text-left py-2 border-b border-stone-50">VOICE</button>
-            <button onClick={() => scrollToSection('plan')} className="text-left py-2 border-b border-stone-50">PLAN</button>
-            <button onClick={() => scrollToSection('contact')} className="bg-[#06C755] text-white py-3 rounded-lg flex justify-center items-center gap-2 font-bold">
-              <MessageCircle size={18} /> LINEで相談
-            </button>
-          </div>
-        )}
-      </nav>
-
-      {/* Hero Area */}
-      <header className="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://drive.google.com/file/d/1-6fNLQDz48nMWKBgzuaoYyx2MiyGVeq9/view?usp=drive_link" 
-            alt="Couple laughing naturally" 
-            className="w-full h-full object-cover opacity-90"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-stone-100/30 via-transparent to-stone-100/50"></div>
-        </div>
-
-        <div className="relative z-10 text-center px-4 md:px-0 mt-12 md:mt-0">
-          <p className="text-sm md:text-base tracking-[0.2em] mb-4 text-stone-700 font-medium animate-fade-in-up">関西・出張フォトグラファー | kenohare</p>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif text-stone-800 leading-relaxed mb-8 tracking-wide drop-shadow-sm animate-fade-in-up delay-100">
-            飾らない。<br />
-            だから、<br />
-            色褪せない。
-          </h1>
-          <div className="w-[1px] h-16 bg-stone-400 mx-auto mt-8 animate-grow-y"></div>
-        </div>
-
-        {/* Floating CTA (Bottom Right) */}
-        <div className="fixed bottom-6 right-6 z-40 animate-bounce-slow">
-          <button 
-            onClick={() => scrollToSection('contact')}
-            className="bg-stone-800 hover:bg-stone-700 text-white px-6 py-4 rounded-full shadow-xl flex items-center gap-3 transition-all transform hover:scale-105 group border border-white/20"
-          >
-            <Camera size={20} className="group-hover:rotate-12 transition-transform" />
-            <span className="font-serif tracking-wider text-sm">撮影の相談をする</span>
-          </button>
-        </div>
-      </header>
-
-      {/* Introduction */}
-      <section className="py-24 md:py-32 bg-white px-6">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl md:text-4xl font-serif text-stone-800 mb-10 leading-relaxed">
-            カメラの前で、<br />
-            固まってしまうお二人へ
-          </h2>
-          <div className="space-y-6 text-stone-600 leading-loose text-base md:text-lg font-light">
-            <p>
-              「結婚写真は残したい。でも、ポーズを決めるのは恥ずかしいし、自分たちらしくない。<br />
-              そう感じていませんか？
-            </p>
-            <p>
-              kenohareが撮るのは、完成されたポーズではなく、<br className="hidden md:block"/>
-              お二人の間に流れる<span className="text-stone-800 font-medium px-1 relative inline-block">『空気感』<span className="absolute bottom-1 left-0 w-full h-2 bg-yellow-100 -z-10"></span></span>です。
-            </p>
-            <p>
-              飾らない、いつもの温度を残します。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Concept */}
-      <section id="concept" className="py-20 md:py-28 px-6 relative overflow-hidden">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
-            alt="Soft nature background" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-[#f5f5f0]/85"></div>
-        </div>
-
-        <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="text-center mb-16">
-            <span className="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Concept</span>
-            <h2 className="text-3xl font-serif text-stone-800">選ばれる理由</h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-10">
-            {/* Point 1 */}
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-stone-800 mb-6">
-                <Camera size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-stone-800 mb-4">頑張らなくていい。<br />「会話」から生まれる写真。</h3>
-              <p className="text-sm leading-relaxed text-stone-600">
-                「笑ってください」とは言いません。お喋りしながら、散歩しながら。ふとした瞬間の表情を切り取ります。
-              </p>
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-5">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="text-2xl font-serif tracking-widest font-bold text-stone-800 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                kenohare
             </div>
-
-            {/* Point 2 */}
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
-              <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-[#06C755] mb-6">
-                <MessageCircle size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-stone-800 mb-4">打ち合わせはLINEで完結。<br />忙しいお二人でも安心。</h3>
-              <p className="text-sm leading-relaxed text-stone-600">
-                事前の対面打ち合わせは不要です。LINEで友達に相談するように、服装や場所のことを決めていきましょう。
-              </p>
-            </div>
-
-            {/* Point 3 */}
-            <div className="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
-              <div className="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-stone-800 mb-6">
-                <MapPin size={24} />
-              </div>
-              <h3 className="text-xl font-bold text-stone-800 mb-4">関西の「日常」を背景に。<br />光や風を感じる場所で。</h3>
-              <p className="text-sm leading-relaxed text-stone-600">
-                作り込んだセットではなく、光や風を感じるロケーションで。思い出の場所への出張も可能です。
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      <section id="gallery" className="py-20 md:py-28 px-6 bg-white">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <span className="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Gallery</span>
-            <h2 className="text-3xl font-serif text-stone-800">フォトギャラリー</h2>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            <div className="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group">
-              <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Couple smiling" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            </div>
-            <div className="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group lg:translate-y-8">
-              <img src="https://images.unsplash.com/photo-1511285560982-1356c11d4606?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Walking in forest" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            </div>
-            <div className="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group">
-              <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Holding hands" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            </div>
-             <div className="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group lg:translate-y-8">
-              <img src="https://images.unsplash.com/photo-1522673607200-1645062cd958?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Urban date" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            </div>
-            <div className="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group hidden md:block">
-              <img src="https://images.unsplash.com/photo-1529634597503-139d372668c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Natural light portrait" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            </div>
-            <div className="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group lg:translate-y-8 hidden md:block">
-              <img src="https://images.unsplash.com/photo-1623164393664-fb4b4860447e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Laughing together" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-            </div>
-          </div>
-          
-          <div className="text-center mt-16">
-            <a href="#" className="inline-flex items-center gap-2 text-stone-500 hover:text-stone-800 transition-colors border-b border-stone-200 pb-1 hover:border-stone-800 text-sm tracking-wide">
-                <Instagram size={16} /> Instagramでもっと見る
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Voice (Testimonials) */}
-      <section id="voice" className="py-20 md:py-28 px-6 bg-[#f9f8f6]">
-        <div className="container mx-auto max-w-5xl">
-          <div className="text-center mb-16">
-            <span className="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Voice</span>
-            <h2 className="text-3xl font-serif text-stone-800">お客様の声</h2>
-          </div>
-
-          <div className="space-y-12">
-            {/* Category 1 */}
-            <div>
-              <h3 className="flex items-center gap-3 text-lg font-bold text-stone-800 mb-6 border-b border-stone-200 pb-2">
-                <Heart size={18} className="text-pink-400" fill="currentColor" />
-                撮影の雰囲気が不安だった方へ
-              </h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-lg relative shadow-sm">
-                  <span className="absolute -top-3 -left-2 text-4xl text-stone-200 font-serif">“</span>
-                  <p className="text-sm leading-relaxed text-stone-700 relative z-10">
-                    元々写真は好きですが、カメラマンによる撮影は緊張しかありませんでした。でも、優しい雰囲気で声掛けしてくださり、緊張することなく楽しく撮影できました。対面での打ち合わせはなくLINEでやり取りできたのも助かりました！
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg relative shadow-sm">
-                  <span className="absolute -top-3 -left-2 text-4xl text-stone-200 font-serif">“</span>
-                  <p className="text-sm leading-relaxed text-stone-700 relative z-10">
-                    緊張していましたが、優しく声をかけてくださったおかげで、楽しく過ごせました。写真も自分たちらしさがしっかり残っていて気に入っています。
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Category 2 */}
-            <div>
-              <h3 className="flex items-center gap-3 text-lg font-bold text-stone-800 mb-6 border-b border-stone-200 pb-2">
-                <Camera size={18} className="text-stone-400" />
-                仕上がりに感動された方へ
-              </h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <p className="text-sm leading-relaxed text-stone-700">
-                    出来上がった写真も柔らかい空気感がそのまま写っていて、とても感動しています。
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <p className="text-sm leading-relaxed text-stone-700">
-                    自然な表情や何気ない瞬間まで残していただき、二人にとって大切な思い出になりました。
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <p className="text-sm leading-relaxed text-stone-700">
-                    仕上がった写真もどれも温かみがあって、見るたびにこの日の気持ちを思い出せそうです。一生の宝物になりました。
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Category 3 */}
-            <div>
-              <h3 className="flex items-center gap-3 text-lg font-bold text-stone-800 mb-6 border-b border-stone-200 pb-2">
-                <CheckCircle2 size={18} className="text-yellow-500" />
-                自然な笑顔を引き出してほしい方へ
-              </h3>
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <p className="text-sm leading-relaxed text-stone-700">
-                  緊張していた私たちに寄り添ってくださり、自然な笑顔を引き出してもらえたのが印象的でした。
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Photographer */}
-      <section className="py-20 bg-[#e8e6e1] px-6">
-        <div className="container mx-auto max-w-4xl flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          <div className="w-full md:w-1/3">
-            <div className="relative aspect-[3/4] overflow-hidden rounded-xl shadow-lg rotate-2 hover:rotate-0 transition-transform duration-500">
-              <img 
-                src="https://images.unsplash.com/photo-1554048612-387768052bf7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
-                alt="Photographer" 
-                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
-              />
-            </div>
-          </div>
-          <div className="w-full md:w-2/3">
-            <h3 className="text-2xl font-serif text-stone-800 mb-6">Photographer</h3>
-            <p className="text-stone-700 leading-loose text-lg font-light">
-              「ハレの日も、ケの日（日常）の延長線上にあります。<br />
-              数十年後に見返して『ああ、私たち幸せだったな』と思える、体温のある写真を撮っています。」
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Plan & Price */}
-      <section id="plan" className="py-24 px-6 bg-white">
-        <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <span className="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Plan & Price</span>
-            <h2 className="text-3xl font-serif text-stone-800 mb-4">料金プラン</h2>
-            <span className="inline-block bg-stone-800 text-white text-xs px-3 py-1 rounded-full tracking-wider">現在、オープニング価格にてご案内中</span>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 items-start">
             
-            {/* Light Plan */}
-            <div className="border border-stone-200 rounded-xl p-8 hover:border-stone-400 transition-colors">
-              <h3 className="text-lg font-bold text-stone-600 mb-2">Light Plan</h3>
-              <p className="text-sm text-stone-500 mb-6">お散歩プラン</p>
-              <div className="text-3xl font-serif text-stone-800 mb-6">¥33,000<span className="text-sm font-sans text-stone-500 ml-1">(税込)</span></div>
-              <ul className="space-y-4 mb-8 text-sm text-stone-600">
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-400"/> 撮影時間：1時間</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-400"/> 納品枚数：30カット以上</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-400"/> ロケ地：1箇所</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-400"/> 私服でのカジュアルな撮影に</li>
-              </ul>
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center space-x-8">
+                <button onclick="scrollToSection('concept')" class="text-sm tracking-wide hover:text-stone-900 transition-colors">CONCEPT</button>
+                <button onclick="scrollToSection('gallery')" class="text-sm tracking-wide hover:text-stone-900 transition-colors">GALLERY</button>
+                <button onclick="scrollToSection('voice')" class="text-sm tracking-wide hover:text-stone-900 transition-colors">VOICE</button>
+                <button onclick="scrollToSection('plan')" class="text-sm tracking-wide hover:text-stone-900 transition-colors">PLAN</button>
+                <a href="#contact" class="bg-[#06C755] hover:bg-[#05b54c] text-white px-5 py-2 rounded-full flex items-center gap-2 transition-all shadow-md hover:shadow-lg text-sm font-bold">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    LINEで相談
+                </a>
             </div>
 
-            {/* Standard Plan */}
-            <div className="border-2 border-stone-800 rounded-xl p-8 relative shadow-xl transform md:-translate-y-4 bg-white z-10">
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-stone-800 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">Recommended</div>
-              <h3 className="text-xl font-bold text-stone-800 mb-2">Standard Plan</h3>
-              <p className="text-sm text-stone-500 mb-6">ロケーションプラン</p>
-              <div className="text-4xl font-serif text-stone-800 mb-6">¥55,000<span className="text-sm font-sans text-stone-500 ml-1">(税込)</span></div>
-              <ul className="space-y-4 mb-8 text-sm text-stone-600">
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-800"/> 撮影時間：3時間</li>
-                <li className="flex items-center gap-2 font-bold text-stone-800"><CheckCircle2 size={16} className="text-stone-800"/> 納品枚数：70カット以上</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-800"/> たっぷり撮影</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-800"/> 衣装チェンジOK</li>
-              </ul>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="mobile-menu-btn" class="text-stone-800 p-2">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
             </div>
-
-            {/* Premier Plan */}
-            <div className="border border-stone-200 rounded-xl p-8 hover:border-stone-400 transition-colors">
-              <h3 className="text-lg font-bold text-stone-600 mb-2">Premier Plan</h3>
-              <p className="text-sm text-stone-500 mb-6">1日の物語を映像と写真で</p>
-              <div className="text-3xl font-serif text-stone-800 mb-6">¥88,000<span className="text-sm font-sans text-stone-500 ml-1">(税込)</span></div>
-              <ul className="space-y-4 mb-8 text-sm text-stone-600">
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-400"/> 撮影時間：1日</li>
-                <li className="flex items-center gap-2"><Video size={16} className="text-stone-400"/> 納品：ショートムービー</li>
-                <li className="flex items-center gap-2"><CheckCircle2 size={16} className="text-stone-400"/> ＋ 写真 130カット以上</li>
-              </ul>
-            </div>
-
-          </div>
-
-          <div className="mt-12 bg-stone-50 p-6 rounded-lg text-sm text-stone-600 max-w-3xl mx-auto">
-            <h4 className="font-bold mb-2 text-stone-800">Option / Note</h4>
-            <ul className="grid md:grid-cols-2 gap-4 list-disc pl-5">
-              <li>大阪から1時間圏内は出張費無料（それ以外は実費）</li>
-              <li>土日祝料金：＋¥11,000</li>
-            </ul>
-          </div>
-
-          <div className="mt-12 text-center">
-            <button onClick={() => scrollToSection('contact')} className="bg-stone-800 hover:bg-stone-700 text-white px-8 py-4 rounded-full shadow-lg transition-all transform hover:scale-105 font-bold tracking-wider flex items-center gap-2 mx-auto">
-              <Camera size={20} />
-              プランの相談をする
-            </button>
-          </div>
         </div>
-      </section>
 
-      {/* FAQ */}
-      <section className="py-20 px-6 bg-[#f9f8f6]">
-        <div className="container mx-auto max-w-3xl">
-          <div className="text-center mb-12">
-             <span className="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Q & A</span>
-            <h2 className="text-3xl font-serif text-stone-800">よくある質問</h2>
-          </div>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-b border-stone-100 p-6 flex-col space-y-4 md:hidden shadow-lg">
+            <button onclick="scrollToSection('concept')" class="text-left py-2 border-b border-stone-50 block w-full">CONCEPT</button>
+            <button onclick="scrollToSection('gallery')" class="text-left py-2 border-b border-stone-50 block w-full">GALLERY</button>
+            <button onclick="scrollToSection('voice')" class="text-left py-2 border-b border-stone-50 block w-full">VOICE</button>
+            <button onclick="scrollToSection('plan')" class="text-left py-2 border-b border-stone-50 block w-full">PLAN</button>
+            <button onclick="scrollToSection('contact')" class="bg-[#06C755] text-white py-3 rounded-lg flex justify-center items-center gap-2 font-bold w-full">
+                <i data-lucide="message-circle" class="w-4 h-4"></i> LINEで相談
+            </button>
+        </div>
+    </nav>
 
-          <div className="space-y-4">
-            {[
-              {
+    <!-- Hero Area -->
+    <header class="relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                alt="Couple laughing naturally" 
+                class="w-full h-full object-cover opacity-90"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-stone-100/30 via-transparent to-stone-100/50"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 md:px-0 mt-12 md:mt-0">
+            <p class="text-sm md:text-base tracking-[0.2em] mb-4 text-stone-700 font-medium animate-fade-in-up">関西・出張フォトグラファー | kenohare</p>
+            <h1 class="text-3xl md:text-5xl lg:text-6xl font-serif text-stone-800 leading-relaxed mb-8 tracking-wide drop-shadow-sm animate-fade-in-up" style="animation-delay: 100ms;">
+                飾らない。<br />
+                だから、<br />
+                色褪せない。
+            </h1>
+            <div class="w-[1px] h-16 bg-stone-400 mx-auto mt-8 animate-grow-y"></div>
+        </div>
+
+        <!-- Floating CTA (Bottom Right) -->
+        <div class="fixed bottom-6 right-6 z-40 animate-bounce-slow">
+            <button 
+                onclick="scrollToSection('contact')"
+                class="bg-stone-800 hover:bg-stone-700 text-white px-6 py-4 rounded-full shadow-xl flex items-center gap-3 transition-all transform hover:scale-105 group border border-white/20"
+            >
+                <i data-lucide="camera" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                <span class="font-serif tracking-wider text-sm">撮影の相談をする</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Introduction -->
+    <section class="py-24 md:py-32 bg-white px-6">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="text-2xl md:text-4xl font-serif text-stone-800 mb-10 leading-relaxed">
+                カメラの前で、<br />
+                固まってしまうお二人へ
+            </h2>
+            <div class="space-y-6 text-stone-600 leading-loose text-base md:text-lg font-light">
+                <p>
+                    「結婚写真は残したい。でも、ポーズを決めるのは恥ずかしいし、自分たちらしくない。<br />
+                    そう感じていませんか？
+                </p>
+                <p>
+                    kenohareが撮るのは、完成されたポーズではなく、<br class="hidden md:block"/>
+                    お二人の間に流れる<span class="text-stone-800 font-medium px-1 relative inline-block">『空気感』<span class="absolute bottom-1 left-0 w-full h-2 bg-yellow-100 -z-10"></span></span>です。
+                </p>
+                <p>
+                    飾らない、いつもの温度を残します。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Concept -->
+    <section id="concept" class="py-20 md:py-28 px-6 relative overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" 
+                alt="Soft nature background" 
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-[#f5f5f0]/85"></div>
+        </div>
+
+        <div class="container mx-auto max-w-6xl relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Concept</span>
+                <h2 class="text-3xl font-serif text-stone-800">選ばれる理由</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-10">
+                <!-- Point 1 -->
+                <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-stone-800 mb-6">
+                        <i data-lucide="camera" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-4">頑張らなくていい。<br />「会話」から生まれる写真。</h3>
+                    <p class="text-sm leading-relaxed text-stone-600">
+                        「笑ってください」とは言いません。お喋りしながら、散歩しながら。ふとした瞬間の表情を切り取ります。
+                    </p>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
+                    <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-[#06C755] mb-6">
+                        <i data-lucide="message-circle" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-4">打ち合わせはLINEで完結。<br />忙しいお二人でも安心。</h3>
+                    <p class="text-sm leading-relaxed text-stone-600">
+                        事前の対面打ち合わせは不要です。LINEで友達に相談するように、服装や場所のことを決めていきましょう。
+                    </p>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="bg-white/90 backdrop-blur-sm p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300">
+                    <div class="w-12 h-12 bg-stone-100 rounded-full flex items-center justify-center text-stone-800 mb-6">
+                        <i data-lucide="map-pin" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-4">関西の「日常」を背景に。<br />光や風を感じる場所で。</h3>
+                    <p class="text-sm leading-relaxed text-stone-600">
+                        作り込んだセットではなく、光や風を感じるロケーションで。思い出の場所への出張も可能です。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="py-20 md:py-28 px-6 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Gallery</span>
+                <h2 class="text-3xl font-serif text-stone-800">フォトギャラリー</h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                <div class="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group">
+                    <img src="https://images.unsplash.com/photo-1621621667797-e06afc217fb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Couple smiling" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div class="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group lg:translate-y-8">
+                    <img src="https://images.unsplash.com/photo-1511285560982-1356c11d4606?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Walking in forest" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div class="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group">
+                    <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Holding hands" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                 <div class="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group lg:translate-y-8">
+                    <img src="https://images.unsplash.com/photo-1522673607200-1645062cd958?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Urban date" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div class="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1529634597503-139d372668c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Natural light portrait" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+                <div class="aspect-[3/4] overflow-hidden rounded-lg bg-stone-100 group lg:translate-y-8 hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1623164393664-fb4b4860447e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Laughing together" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <a href="#" class="inline-flex items-center gap-2 text-stone-500 hover:text-stone-800 transition-colors border-b border-stone-200 pb-1 hover:border-stone-800 text-sm tracking-wide">
+                    <i data-lucide="instagram" class="w-4 h-4"></i> Instagramでもっと見る
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Voice (Testimonials) -->
+    <section id="voice" class="py-20 md:py-28 px-6 bg-[#f9f8f6]">
+        <div class="container mx-auto max-w-5xl">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Voice</span>
+                <h2 class="text-3xl font-serif text-stone-800">お客様の声</h2>
+            </div>
+
+            <div class="space-y-12">
+                <!-- Category 1 -->
+                <div>
+                    <h3 class="flex items-center gap-3 text-lg font-bold text-stone-800 mb-6 border-b border-stone-200 pb-2">
+                        <i data-lucide="heart" class="w-4 h-4 text-pink-400 fill-current"></i>
+                        撮影の雰囲気が不安だった方へ
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg relative shadow-sm">
+                            <span class="absolute -top-3 -left-2 text-4xl text-stone-200 font-serif">“</span>
+                            <p class="text-sm leading-relaxed text-stone-700 relative z-10">
+                                元々写真は好きですが、カメラマンによる撮影は緊張しかありませんでした。でも、優しい雰囲気で声掛けしてくださり、緊張することなく楽しく撮影できました。対面での打ち合わせはなくLINEでやり取りできたのも助かりました！
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg relative shadow-sm">
+                            <span class="absolute -top-3 -left-2 text-4xl text-stone-200 font-serif">“</span>
+                            <p class="text-sm leading-relaxed text-stone-700 relative z-10">
+                                緊張していましたが、優しく声をかけてくださったおかげで、楽しく過ごせました。写真も自分たちらしさがしっかり残っていて気に入っています。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div>
+                    <h3 class="flex items-center gap-3 text-lg font-bold text-stone-800 mb-6 border-b border-stone-200 pb-2">
+                        <i data-lucide="camera" class="w-4 h-4 text-stone-400"></i>
+                        仕上がりに感動された方へ
+                    </h3>
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <p class="text-sm leading-relaxed text-stone-700">
+                                出来上がった写真も柔らかい空気感がそのまま写っていて、とても感動しています。
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <p class="text-sm leading-relaxed text-stone-700">
+                                自然な表情や何気ない瞬間まで残していただき、二人にとって大切な思い出になりました。
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-sm">
+                            <p class="text-sm leading-relaxed text-stone-700">
+                                仕上がった写真もどれも温かみがあって、見るたびにこの日の気持ちを思い出せそうです。一生の宝物になりました。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div>
+                    <h3 class="flex items-center gap-3 text-lg font-bold text-stone-800 mb-6 border-b border-stone-200 pb-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4 text-yellow-500"></i>
+                        自然な笑顔を引き出してほしい方へ
+                    </h3>
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <p class="text-sm leading-relaxed text-stone-700">
+                            緊張していた私たちに寄り添ってくださり、自然な笑顔を引き出してもらえたのが印象的でした。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photographer -->
+    <section class="py-20 bg-[#e8e6e1] px-6">
+        <div class="container mx-auto max-w-4xl flex flex-col md:flex-row items-center gap-10 md:gap-16">
+            <div class="w-full md:w-1/3">
+                <div class="relative aspect-[3/4] overflow-hidden rounded-xl shadow-lg rotate-2 hover:rotate-0 transition-transform duration-500">
+                    <img 
+                        src="https://images.unsplash.com/photo-1554048612-387768052bf7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                        alt="Photographer" 
+                        class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                    />
+                </div>
+            </div>
+            <div class="w-full md:w-2/3">
+                <h3 class="text-2xl font-serif text-stone-800 mb-6">Photographer</h3>
+                <p class="text-stone-700 leading-loose text-lg font-light">
+                    「ハレの日も、ケの日（日常）の延長線上にあります。<br />
+                    数十年後に見返して『ああ、私たち幸せだったな』と思える、体温のある写真を撮っています。」
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plan & Price -->
+    <section id="plan" class="py-24 px-6 bg-white">
+        <div class="container mx-auto max-w-6xl">
+            <div class="text-center mb-16">
+                <span class="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Plan & Price</span>
+                <h2 class="text-3xl font-serif text-stone-800 mb-4">料金プラン</h2>
+                <span class="inline-block bg-stone-800 text-white text-xs px-3 py-1 rounded-full tracking-wider">現在、オープニング価格にてご案内中</span>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 items-start">
+                
+                <!-- Light Plan -->
+                <div class="border border-stone-200 rounded-xl p-8 hover:border-stone-400 transition-colors">
+                    <h3 class="text-lg font-bold text-stone-600 mb-2">Light Plan</h3>
+                    <p class="text-sm text-stone-500 mb-6">お散歩プラン</p>
+                    <div class="text-3xl font-serif text-stone-800 mb-6">¥33,000<span class="text-sm font-sans text-stone-500 ml-1">(税込)</span></div>
+                    <ul class="space-y-4 mb-8 text-sm text-stone-600">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-400"></i> 撮影時間：1時間</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-400"></i> 納品枚数：30カット以上</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-400"></i> ロケ地：1箇所</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-400"></i> 私服でのカジュアルな撮影に</li>
+                    </ul>
+                </div>
+
+                <!-- Standard Plan -->
+                <div class="border-2 border-stone-800 rounded-xl p-8 relative shadow-xl transform md:-translate-y-4 bg-white z-10">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-stone-800 text-white text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">Recommended</div>
+                    <h3 class="text-xl font-bold text-stone-800 mb-2">Standard Plan</h3>
+                    <p class="text-sm text-stone-500 mb-6">ロケーションプラン</p>
+                    <div class="text-4xl font-serif text-stone-800 mb-6">¥55,000<span class="text-sm font-sans text-stone-500 ml-1">(税込)</span></div>
+                    <ul class="space-y-4 mb-8 text-sm text-stone-600">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-800"></i> 撮影時間：3時間</li>
+                        <li class="flex items-center gap-2 font-bold text-stone-800"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-800"></i> 納品枚数：70カット以上</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-800"></i> たっぷり撮影</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-800"></i> 衣装チェンジOK</li>
+                    </ul>
+                </div>
+
+                <!-- Premier Plan -->
+                <div class="border border-stone-200 rounded-xl p-8 hover:border-stone-400 transition-colors">
+                    <h3 class="text-lg font-bold text-stone-600 mb-2">Premier Plan</h3>
+                    <p class="text-sm text-stone-500 mb-6">1日の物語を映像と写真で</p>
+                    <div class="text-3xl font-serif text-stone-800 mb-6">¥88,000<span class="text-sm font-sans text-stone-500 ml-1">(税込)</span></div>
+                    <ul class="space-y-4 mb-8 text-sm text-stone-600">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-400"></i> 撮影時間：1日</li>
+                        <li class="flex items-center gap-2"><i data-lucide="video" class="w-4 h-4 text-stone-400"></i> 納品：ショートムービー</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-stone-400"></i> ＋ 写真 130カット以上</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="mt-12 bg-stone-50 p-6 rounded-lg text-sm text-stone-600 max-w-3xl mx-auto">
+                <h4 class="font-bold mb-2 text-stone-800">Option / Note</h4>
+                <ul class="grid md:grid-cols-2 gap-4 list-disc pl-5">
+                    <li>大阪から1時間圏内は出張費無料（それ以外は実費）</li>
+                    <li>土日祝料金：＋¥11,000</li>
+                </ul>
+            </div>
+
+            <div class="mt-12 text-center">
+                <button onclick="scrollToSection('contact')" class="bg-stone-800 hover:bg-stone-700 text-white px-8 py-4 rounded-full shadow-lg transition-all transform hover:scale-105 font-bold tracking-wider flex items-center gap-2 mx-auto">
+                    <i data-lucide="camera" class="w-5 h-5"></i>
+                    プランの相談をする
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 px-6 bg-[#f9f8f6]">
+        <div class="container mx-auto max-w-3xl">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold tracking-widest text-stone-500 uppercase block mb-2">Q & A</span>
+                <h2 class="text-3xl font-serif text-stone-800">よくある質問</h2>
+            </div>
+
+            <div class="space-y-4" id="faq-container">
+                <!-- FAQ items generated by JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-24 px-6 bg-white relative">
+        <div class="container mx-auto max-w-4xl relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-serif text-stone-800 mb-6">Contact</h2>
+                <p class="text-stone-600 mb-10 leading-relaxed">
+                    まずは空き状況の確認や、些細なご質問でも構いません。<br class="hidden md:block" />
+                    LINEまたはフォームよりお送りください。
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-10">
+                <!-- LINE Contact - Primary -->
+                <div class="bg-[#f0fdf4] border border-green-100 rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow">
+                    <h3 class="font-bold text-green-800 mb-2">おすすめ</h3>
+                    <p class="text-sm text-green-700 mb-6">友達追加して、トークから気軽に相談</p>
+                    <a href="https://lin.ee/qJWZz9p" target="_blank" rel="noopener noreferrer">
+                        <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="LINEで気軽に相談する" height="36" border="0" />
+                    </a>
+                    <p class="text-xs text-green-600 mt-4 opacity-80">※自動返信ではありません。私が直接お返事します。</p>
+                </div>
+
+                <!-- Form Contact - Secondary -->
+                <div class="bg-stone-50 rounded-2xl p-8 border border-stone-100 flex flex-col justify-center h-full">
+                    <h3 class="font-bold text-stone-700 mb-4 flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4"></i> メールフォーム</h3>
+                    <p class="text-sm text-stone-600 mb-8">
+                        LINEをお持ちでない方や、メールでのご連絡をご希望の方は、<br/>
+                        以下のGoogleフォームよりお問い合わせください。
+                    </p>
+                    <a 
+                        href="https://forms.gle/PwKg5tqtseV1FApBA" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        class="w-full bg-stone-700 hover:bg-stone-800 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-1"
+                    >
+                        Googleフォームへ移動する <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-stone-900 text-stone-400 py-12 px-6">
+        <div class="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-2xl font-serif text-stone-200 tracking-widest font-bold">kenohare</div>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition-colors"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                <a href="#" class="hover:text-white transition-colors"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+            </div>
+            <div class="text-xs tracking-wide">
+                &copy; 2024 kenohare Photography. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcon = mobileMenuBtn.querySelector('i');
+        let isMenuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenu.classList.add('flex');
+                mobileMenuIcon.setAttribute('data-lucide', 'x');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                mobileMenuIcon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons(); // Re-render icons
+        });
+
+        // Close mobile menu on link click
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+            // Close menu
+            isMenuOpen = false;
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('flex');
+            mobileMenuIcon.setAttribute('data-lucide', 'menu');
+            lucide.createIcons();
+        }
+
+        // Sticky Navbar
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-sm', 'py-3');
+                navbar.classList.remove('bg-transparent', 'py-5');
+            } else {
+                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-sm', 'py-3');
+                navbar.classList.add('bg-transparent', 'py-5');
+            }
+        });
+
+        // FAQ Logic
+        const faqData = [
+            {
                 q: "撮られるのが本当に苦手ですが大丈夫ですか？",
                 a: "大丈夫です。ポーズを決めるのではなく、二人で歩いたり話したりしている様子を撮影します。「二人で話しているだけで絵になる」瞬間を逃しませんので、ご安心ください。"
-              },
-              {
+            },
+            {
                 q: "衣装のレンタルはありますか？",
                 a: "提携店による縛りがないため、「持ち込み自由（無料）」としています。お気に入りのワンピースや、ネットで見つけたドレスなど、お二人が本当に着たいものを自由に着ていただけます。"
-              },
-              {
+            },
+            {
                 q: "雨の日はどうなりますか？",
                 a: "前日の天気予報を見て判断し、無料で日程変更（リスケジュール）が可能です。無理に撮影せず、良い光の中で撮りましょう。"
-              }
-            ].map((item, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <button 
-                  onClick={() => toggleFaq(index)}
-                  className="w-full px-6 py-4 text-left flex justify-between items-center font-bold text-stone-700 hover:bg-stone-50 transition-colors"
-                >
-                  <span className="flex items-center gap-3"><span className="text-stone-300 font-serif text-xl">Q.</span> {item.q}</span>
-                  {openFaq === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            }
+        ];
+
+        const faqContainer = document.getElementById('faq-container');
+
+        faqData.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'bg-white rounded-lg shadow-sm overflow-hidden';
+            div.innerHTML = `
+                <button onclick="toggleFaq(${index})" class="w-full px-6 py-4 text-left flex justify-between items-center font-bold text-stone-700 hover:bg-stone-50 transition-colors">
+                    <span class="flex items-center gap-3"><span class="text-stone-300 font-serif text-xl">Q.</span> ${item.q}</span>
+                    <i id="faq-icon-${index}" data-lucide="chevron-down" class="w-5 h-5"></i>
                 </button>
-                {openFaq === index && (
-                  <div className="px-6 pb-6 pt-2 bg-stone-50 border-t border-stone-100">
-                     <div className="flex gap-3">
-                       <span className="text-stone-400 font-serif text-xl">A.</span>
-                       <p className="text-sm leading-relaxed text-stone-600">{item.a}</p>
-                     </div>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+                <div id="faq-content-${index}" class="hidden px-6 pb-6 pt-2 bg-stone-50 border-t border-stone-100">
+                    <div class="flex gap-3">
+                        <span class="text-stone-400 font-serif text-xl">A.</span>
+                        <p class="text-sm leading-relaxed text-stone-600">${item.a}</p>
+                    </div>
+                </div>
+            `;
+            faqContainer.appendChild(div);
+        });
+        lucide.createIcons(); // Render icons in dynamic content
 
-      {/* Contact */}
-      <section id="contact" className="py-24 px-6 bg-white relative">
-        <div className="container mx-auto max-w-4xl relative z-10">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-serif text-stone-800 mb-6">Contact</h2>
-            <p className="text-stone-600 mb-10 leading-relaxed">
-              まずは空き状況の確認や、些細なご質問でも構いません。<br className="hidden md:block" />
-              LINEまたはフォームよりお送りください。
-            </p>
-          </div>
+        function toggleFaq(index) {
+            const content = document.getElementById(`faq-content-${index}`);
+            const icon = document.getElementById(`faq-icon-${index}`);
+            
+            if (content.classList.contains('hidden')) {
+                // Close others (optional - can remove if you want multiple open)
+                document.querySelectorAll('[id^="faq-content-"]').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('[id^="faq-icon-"]').forEach(el => el.setAttribute('data-lucide', 'chevron-down'));
 
-          <div className="grid md:grid-cols-2 gap-10">
-            {/* LINE Contact - Primary */}
-            <div className="bg-[#f0fdf4] border border-green-100 rounded-2xl p-8 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow">
-              <h3 className="font-bold text-green-800 mb-2">おすすめ</h3>
-              <p className="text-sm text-green-700 mb-6">友達追加して、トークから気軽に相談</p>
-              <a href="https://lin.ee/qJWZz9p" target="_blank" rel="noopener noreferrer">
-                <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="LINEで気軽に相談する" height="36" border="0" />
-              </a>
-              <p className="text-xs text-green-600 mt-4 opacity-80">※自動返信ではありません。私が直接お返事します。</p>
-            </div>
-
-            {/* Form Contact - Secondary */}
-            <div className="bg-stone-50 rounded-2xl p-8 border border-stone-100 flex flex-col justify-center h-full">
-              <h3 className="font-bold text-stone-700 mb-4 flex items-center gap-2"><Mail size={18} /> メールフォーム</h3>
-              <p className="text-sm text-stone-600 mb-8">
-                LINEをお持ちでない方や、メールでのご連絡をご希望の方は、<br/>
-                以下のGoogleフォームよりお問い合わせください。
-              </p>
-              <a 
-                href="https://forms.gle/PwKg5tqtseV1FApBA" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="w-full bg-stone-700 hover:bg-stone-800 text-white font-bold py-4 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg transform hover:-translate-y-1"
-              >
-                Googleフォームへ移動する <ArrowRight size={18} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-stone-900 text-stone-400 py-12 px-6">
-        <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-2xl font-serif text-stone-200 tracking-widest font-bold">kenohare</div>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors"><Instagram size={20} /></a>
-            <a href="#" className="hover:text-white transition-colors"><MessageCircle size={20} /></a>
-          </div>
-          <div className="text-xs tracking-wide">
-            &copy; 2024 kenohare Photography. All rights reserved.
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-};
-
-export default KenohareLP;
+                // Open this one
+                content.classList.remove('hidden');
+                icon.setAttribute('data-lucide', 'chevron-up');
+            } else {
+                content.classList.add('hidden');
+                icon.setAttribute('data-lucide', 'chevron-down');
+            }
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
